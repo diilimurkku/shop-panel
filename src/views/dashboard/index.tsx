@@ -1,18 +1,28 @@
 'use client'
 import React from 'react'
 
-import { Card, CardContent, CardHeader, Grid, lighten, useTheme } from '@mui/material'
+import { Card, CardContent, CardHeader, Grid, useTheme } from '@mui/material'
 
 import { type ApexOptions } from 'apexcharts'
 
 import HorizontalWithBorder from '@/components/card-statistics/HorizontalWithBorder'
 
 import { type getDictionary } from '@/utils/getDictionary'
-import OptionMenu from '@/@core/components/option-menu'
 import AppReactApexCharts from '@/libs/styles/AppReactApexCharts'
 import { ClicksChart, ProductsMergeStatusChart, RecentClicks } from './components'
 
-const deliveryExceptionsChartSeries = [13, 25, 22, 40]
+const series = [
+  {
+    name: 'Shipment',
+    type: 'column',
+    data: [38, 45, 33, 38, 32, 48, 45, 40, 42, 37]
+  },
+  {
+    name: 'Delivery',
+    type: 'line',
+    data: [23, 28, 23, 32, 25, 42, 32, 32, 26, 24]
+  }
+]
 
 const Dashboard = ({ dictionary }: { dictionary: Awaited<ReturnType<typeof getDictionary>> }) => {
   const { dashboard_page, keywords } = dictionary
@@ -20,72 +30,94 @@ const Dashboard = ({ dictionary }: { dictionary: Awaited<ReturnType<typeof getDi
   const theme = useTheme()
 
   const options: ApexOptions = {
-    labels: ['Incorrect address', 'Weather conditions', 'Federal Holidays', 'Damage during transit'],
-    stroke: {
-      width: 0
-    },
-    colors: [
-      'var(--mui-palette-success-main)',
-      lighten(theme.palette.success.main, 0.2),
-      lighten(theme.palette.success.main, 0.4),
-      lighten(theme.palette.success.main, 0.6)
-    ],
-    dataLabels: {
-      enabled: false,
-      formatter(val: string) {
-        return `${Number.parseInt(val)}%`
+    chart: {
+      type: 'line',
+      stacked: false,
+      parentHeightOffset: 0,
+      toolbar: {
+        show: false
+      },
+      zoom: {
+        enabled: false
       }
+    },
+    markers: {
+      size: 5,
+      colors: '#fff',
+      strokeColors: 'var(--mui-palette-primary-main)',
+      hover: {
+        size: 6
+      },
+      radius: 4
+    },
+    stroke: {
+      curve: 'smooth',
+      width: [0, 3],
+      lineCap: 'round'
     },
     legend: {
       show: true,
       position: 'bottom',
-      offsetY: 10,
       markers: {
         width: 8,
         height: 8,
         offsetY: 1,
         offsetX: theme.direction === 'rtl' ? 8 : -4
       },
+      height: 40,
       itemMargin: {
-        horizontal: 15,
-        vertical: 5
+        horizontal: 10,
+        vertical: 0
       },
-      fontSize: '13px',
+      fontSize: '15px',
+      fontFamily: 'Open Sans',
       fontWeight: 400,
       labels: {
-        colors: 'var(--mui-palette-text-primary)',
-        useSeriesColors: false
-      }
+        colors: 'var(--mui-palette-text-primary)'
+      },
+      offsetY: 10
     },
     grid: {
-      padding: {
-        top: 15
-      }
+      strokeDashArray: 8,
+      borderColor: 'var(--mui-palette-divider)'
+    },
+    colors: ['var(--mui-palette-warning-main)', 'var(--mui-palette-primary-main)'],
+    fill: {
+      opacity: [1, 1]
     },
     plotOptions: {
-      pie: {
-        donut: {
-          size: '75%',
-          labels: {
-            show: true,
-            value: {
-              fontSize: '24px',
-              color: 'var(--mui-palette-text-primary)',
-              fontWeight: 500,
-              offsetY: -20
-            },
-            name: { offsetY: 20 },
-            total: {
-              show: true,
-              fontSize: '0.9375rem',
-              fontWeight: 400,
-              label: 'AVG. Exceptions',
-              color: 'var(--mui-palette-text-secondary)',
-              formatter() {
-                return '30%'
-              }
-            }
-          }
+      bar: {
+        columnWidth: '30%',
+        borderRadius: 4,
+        borderRadiusApplication: 'end'
+      }
+    },
+    dataLabels: {
+      enabled: false
+    },
+    xaxis: {
+      tickAmount: 10,
+      categories: ['1 Jan', '2 Jan', '3 Jan', '4 Jan', '5 Jan', '6 Jan', '7 Jan', '8 Jan', '9 Jan', '10 Jan'],
+      labels: {
+        style: {
+          colors: 'var(--mui-palette-text-disabled)',
+          fontSize: '13px',
+          fontWeight: 400
+        }
+      },
+      axisBorder: {
+        show: false
+      },
+      axisTicks: {
+        show: false
+      }
+    },
+    yaxis: {
+      labels: {
+        style: {
+          colors: 'var(--mui-palette-text-disabled)',
+          fontSize: '13px',
+          fontWeight: 400
         }
       }
     }
@@ -116,6 +148,21 @@ const Dashboard = ({ dictionary }: { dictionary: Awaited<ReturnType<typeof getDi
       </Grid>
       <Grid xs={12} md={6} item>
         <RecentClicks />
+      </Grid>
+      <Grid xs={12} item>
+        <Card>
+          <CardHeader title='Shipment Statistics' subheader='Total number of deliveries 23.8k' />
+          <CardContent>
+            <AppReactApexCharts
+              id='shipment-statistics'
+              type='line'
+              height={313}
+              width='100%'
+              series={series}
+              options={options}
+            />
+          </CardContent>
+        </Card>
       </Grid>
     </Grid>
   )
