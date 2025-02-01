@@ -5,9 +5,8 @@ import { cookies } from 'next/headers'
 import Credentials from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 import type { NextAuthOptions } from 'next-auth'
-import createClient from 'openapi-fetch'
 
-import type { paths } from '@/@core/api/v1'
+import apiClient from '@/utils/service'
 
 export const authOptions = () => {
   return {
@@ -17,46 +16,31 @@ export const authOptions = () => {
         name: 'Credentials',
         credentials: {
           email: { label: 'email', type: 'text' },
-          password: { label: 'password', type: 'password' },
-          mobile: { label: 'password', type: 'password' }
+          password: { label: 'password', type: 'password' }
         },
         async authorize(credentials) {
-          const { email, password, mobile } = credentials as { email: string; password: string; mobile: string }
+          const { email, password } = credentials as { email: string; password: string }
 
-          const payload = mobile.length ? { mobile, password } : { email, password }
-
-          const devBaseUrl = cookies().get('devBaseUrl')
+          const payload = { email, password }
 
           try {
-            const client = createClient<paths>({
-              baseUrl: devBaseUrl?.value?.length ? devBaseUrl?.value : process.env.NEXT_PUBLIC_API_URL,
-              headers: {
-                dashboard: 'admin',
-                accept: 'application/json'
-              }
-            })
+            const res = await apiClient.post(`${process.env.API_URL}/auth/login`, payload)
 
-            const { data: apiData, error } = await client.POST('/auth/admin/login', {
-              body: { ...payload }
-            })
+            const data = res.data
 
-            const data = apiData?.data
-
-            if (data?.user) {
-              return { ...data.user, token: data.token }
-            } else {
-              throw new Error(JSON.stringify(error) as string)
+            if (data) {
+              return { ...data }
             }
           } catch (error: any) {
             throw new Error(error?.message)
           }
         }
-      })
+      }),
 
-      // GoogleProvider({
-      //   clientId: process.env.GOOGLE_CLIENT_ID as string,
-      //   clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
-      // })
+      GoogleProvider({
+        clientId: process.env.GOOGLE_CLIENT_ID ?? '',
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? ''
+      })
     ],
 
     session: {
@@ -71,15 +55,22 @@ export const authOptions = () => {
     callbacks: {
       async jwt({ token, user }) {
         if (user) {
-          token.name = user.name
-          token.token = user.token
+          token = { ...user }
         }
 
         return token
       },
       async session({ session, token }) {
         if (session.user) {
-          session.user.name = token.name as string
+          session.user = {
+            id: token.id as number,
+            firstName: token.firstName as string,
+            lastName: token.lastName as string,
+            email: token.email as string,
+            role: token.role as string,
+            status: token.status as string,
+            createdAt: token.createdAt as string
+          }
           session.accessToken = token.token as string
         }
 

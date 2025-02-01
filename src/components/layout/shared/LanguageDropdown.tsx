@@ -38,12 +38,12 @@ const getLocalePath = (pathName: string, locale: string) => {
 
 const languageData: LanguageDataType[] = [
   {
-    langCode: 'en',
-    langName: 'English'
+    langCode: 'fi',
+    langName: 'Finnish'
   },
   {
-    langCode: 'fa',
-    langName: 'فارسی'
+    langCode: 'en',
+    langName: 'English'
   }
 ]
 
