@@ -1,7 +1,9 @@
 'use client'
 import React from 'react'
 
-import { Card, CardContent, CardHeader, Grid, useTheme } from '@mui/material'
+import { Button, Card, CardContent, CardHeader, Grid, useTheme } from '@mui/material'
+
+import { loadStripe } from '@stripe/stripe-js'
 
 import { type ApexOptions } from 'apexcharts'
 
@@ -23,6 +25,16 @@ const series = [
     data: [23, 28, 23, 32, 25, 42, 32, 32, 26, 24]
   }
 ]
+
+let stripe: any
+
+const getStripe = async () => {
+  if (!stripe) {
+    stripe = await loadStripe(`${process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}`)
+  }
+
+  return stripe
+}
 
 const Dashboard = ({ dictionary }: { dictionary: Awaited<ReturnType<typeof getDictionary>> }) => {
   const { dashboard_page, keywords } = dictionary
@@ -123,9 +135,28 @@ const Dashboard = ({ dictionary }: { dictionary: Awaited<ReturnType<typeof getDi
     }
   }
 
+  const handleCheckout = async () => {
+    const stripe = await getStripe()
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/checkout_session`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify('')
+    })
+
+    const data = await response.json()
+
+    await stripe.redirectToCheckout({ sessionId: data.id })
+  }
+
   return (
     <Grid container spacing={6}>
       <Grid xs={12} md={6} item container spacing={6}>
+        <Grid xs={12} item>
+          <Button variant='contained' onClick={handleCheckout}>
+            test
+          </Button>
+        </Grid>
         <Grid item xs={12} lg={6}>
           <HorizontalWithBorder
             title={dashboard_page.top_product}
