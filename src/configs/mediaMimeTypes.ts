@@ -1,4 +1,4 @@
-import { ImageMimeType, VideoMimeType } from '@/@core/types'
+import type { ImageMimeType, VideoMimeType } from '@/@core/types'
 
 export const validVideoMimeTypes: VideoMimeType[] | undefined = [
   'video/mp4',
