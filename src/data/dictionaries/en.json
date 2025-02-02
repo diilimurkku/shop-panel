@@ -1,67 +1,20 @@
 {
   "navigation": {
     "dashboard": "Dashboard",
-    "product_management": "Product Management",
-    "category": "Products Category",
-    "brand": "Products Brand",
-    "attribute_attribute_values": "Products Attribute/Attribute Values",
-    "attribute_groups": "Products Attribute Groups",
     "products": "Products",
-    "pricing_plans": "Price Groups",
-    "tags": "Products Tag",
-    "content_management": "Content Management",
-    "slider_management": "Slider Management",
-    "slider_list": "Sliders List",
-    "slider_slides_list": "Slider Slides List",
-    "slider_slides_add": "Add Slider Slide",
-    "slider_slides_edit": "Edit Slider Slide",
-    "story_management": "Story Management",
-    "blog_management": "Blog Management",
-    "blog_list": "Blog List",
-    "blog_category": "Blog Category",
-    "faq_management": "FAQ Management",
-    "customers_satisfaction_comments_management": "Customer Feedback Management",
-    "social_media_management": "Social Media Link Management",
-    "banner_management": "Banners Management",
-    "users_management": "Users Management",
-    "permissions_management": "Access Level Management",
-    "roles_management": "Roles Management",
-    "user_groups": "User Groups",
-    "orders_management": "Orders Management",
-    "orders_list": "Orders List",
-    "refund_order": "Refund Order",
-    "financial_management": "Financial Management",
-    "bank_management": "Bank Management",
-    "cashier_management": "Cashier Management",
-    "users_wallet_management": "Users Wallet Management",
-    "invoices_management": "Invoices Management",
-    "sell": "Sell",
-    "pre_invoice": "Pre Invoice",
-    "receipts_payments_management": "Transactions Management",
-    "receipts": "Receipts",
-    "payments": "Payments",
-    "payment_methods_management": "Payment Methods Management",
-    "taxes_management": "Tax Management",
-    "profits_management": "Profit Management",
-    "shipping_methods_management": "Shipping Methods Management",
-    "settings": "Setting",
-    "units_management": "Units",
-    "messages_management": "Messages Management",
-    "products_comments_management": "Product Comments Management",
-    "customers_messages_management": "Customer Messages Management",
-    "chat": "Chat",
-    "notifications": "Notifications",
-    "reports": "Reports",
-    "users_report": "Users Report",
-    "products_report": "Products Report",
-    "orders_report": "Orders Report",
-    "app_registeration": "App Registeration",
-    "web_registeration": "Website Registeration",
-    "financial_reports": "Financial Reports",
-    "loyalty_club": "Loyalty Club",
-    "discount_code": "Discount Code",
-    "sales_campaign_management": "Sales Campaign Management",
-    "users_levels": "Users Levels"
+    "billing_payments": "Billing & Payments",
+    "integration": "Integration",
+    "settings": "Settings"
+  },
+  "dashboard_page": {
+    "top_product": "Top Product",
+    "top_category": "Top Category",
+    "total_clicks": "Total Clicks",
+    "products_based_on_merge_status": "Products based on merge status",
+    "merged": "Merged",
+    "unmerged": "Unmerged",
+    "total_products": "Total Products",
+    "recent_clicks": "Recent Clicks"
   },
   "theme_customizer": {
     "theme_customizer_title": "Theme Customizer",
@@ -89,14 +42,15 @@
     "rtl": "Right to Left (Persian)"
   },
   "login": {
-    "enter_to_login": "Enter your $ to login",
-    "login_with": "Login with",
-    "enter_valid_email": "Please enter a valid email",
+    "enter_to_login": "Enter your $ to log in",
+    "login_with_google": "Log in with Google",
+    "login_with": "Log in with",
+    "enter_valid_email": "Please enter a valid email address",
     "enter_valid_phone_number": "Please enter a valid phone number",
     "enter_password": "Please provide at least 6 characters",
     "enter_phone_number": "Please enter your phone number",
-    "enter_email": "Please enter your email",
-    "logout": "Logout"
+    "enter_email": "Please enter your email address",
+    "logout": "Log out"
   },
   "keywords": {
     "login": "Login",
@@ -203,7 +157,13 @@
     "exceptions": "Exceptions",
     "reply": "Reply",
     "background_color": "Background Color",
-    "isNotValid": "is not valid"
+    "isNotValid": "is not valid",
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "product_name": "Product Name",
+    "date": "Date"
   },
   "dropzone": {
     "title": "Drag and Drop Your $ Here Or Click Here",
@@ -238,75 +198,5 @@
     "hour": "HH",
     "minute": "mm",
     "meridiem": "am/pm"
-  },
-  "product_management": {
-    "attributes": {
-      "addNewAttributeTitle": "Add new Attribute",
-      "editAttributeTitle": "Edit Attribute",
-      "attributeValues": "Attribute Values",
-      "comparableHint": "Comparable attributes can be used in filters and sorting.",
-      "filterableHint": "Filterable attributes can be used in filters.",
-      "specialHint": "Special attributes can be used in special products."
-    },
-    "brands": {
-      "addNewBrandTitle": "Add new Brand",
-      "editBrandTitle": "Edit Brand"
-    },
-    "categories": {
-      "addNewCategoryTitle": "Add new Category",
-      "editCategoryTitle": "Edit Category"
-    },
-    "products": {
-      "edit_product_title": "Edit Product"
-    },
-    "pricing_plans": {
-      "normal_percent": "Normal percent",
-      "special_percent": "Special percent",
-      "application_percent": "Application percent",
-      "website_percent": "Website percent"
-    },
-    "tags": {
-      "add_new_tag": "Add new tag"
-    }
-  },
-  "content_management": {
-    "slides": {
-      "addNewSlideTitle": "Add new slide",
-      "editSlideTitle": "Edit slide"
-    },
-    "stories": {
-      "addNewStoryTitle": "Add new story",
-      "editStoryTitle": "Edit story",
-      "highlight_category": "Highlight category"
-    },
-    "banners": {
-      "buttons_title": "Buttons",
-      "button_title": "Button Title",
-      "button_type": "Button Type",
-      "button_style": "Button Style"
-    }
-  },
-  "user_management": {
-    "user_group": {
-      "add_user_group": "Add User Group",
-      "edit_user_group": "Edit User Group",
-      "add_exception": "Add Exception",
-      "exception_type": "Exception Type",
-      "application_percent": "Application percent",
-      "website_percent": "Website percent"
-    }
-  },
-  "unique_validation_errors": {
-    "slugStartWithHyphen": "Slug can't start with hyphen",
-    "slugEndWithHyphen": "Slug can't end with hyphen",
-    "slugContainConsecutiveHyphens": "Slug can't contain consecutive hyphens",
-    "lowercaseNumberHyphenLengthError": "Slug must only contain lowercase letters, numbers, and hyphens and must be between 3 to 64 characters long",
-    "cannotBeMoreThan": "Can't be more than $",
-    "cannotBeLessThan": "Can't be less than $",
-    "urlValidation": "Enter valid url",
-    "max_value": "Can't be more than $"
-  },
-  "product_filter_maker": {
-    "title": "Products Filter"
   }
 }

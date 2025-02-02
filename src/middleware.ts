@@ -2,7 +2,7 @@ import { cookies } from 'next/headers'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export function middleware(req: NextRequest) {
-  const preferredLanguage = cookies().get('preferredLanguage')?.value || 'fa'
+  const preferredLanguage = cookies().get('preferredLanguage')?.value || 'fi'
 
   const { pathname } = req.nextUrl
 
@@ -18,7 +18,7 @@ export function middleware(req: NextRequest) {
   const langInPath = pathname.split('/')[1]
 
   // If the path does not already contain a language, redirect based on the cookie or default language
-  if (langInPath !== 'fa' && langInPath !== 'en') {
+  if (langInPath !== 'fi' && langInPath !== 'en') {
     const url = req.nextUrl.clone()
 
     url.pathname = `/${preferredLanguage}/${pathname}`

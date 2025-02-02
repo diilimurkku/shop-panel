@@ -46,7 +46,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ placeholder, onChange, value })
       TextAlign.configure({
         types: ['heading', 'paragraph'],
         alignments: ['left', 'center', 'right', 'justify'],
-        defaultAlignment: lang === 'fa' ? 'right' : 'left'
+        defaultAlignment: 'left'
       }),
       Underline
     ],

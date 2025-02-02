@@ -9,12 +9,9 @@ import { useParams } from 'next/navigation'
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import type { BoxProps } from '@mui/material/Box'
-import ReactDatePickerComponent, { registerLocale } from 'react-datepicker'
-import { faIR } from 'date-fns/locale/fa-IR'
+import ReactDatePickerComponent from 'react-datepicker'
 
 import 'react-datepicker/dist/react-datepicker.css'
-
-registerLocale('fa-IR', faIR)
 
 type Props = ComponentProps<typeof ReactDatePickerComponent> & {
   boxProps?: BoxProps
@@ -507,7 +504,7 @@ const AppReactDatepicker = (props: Props) => {
 
   return (
     <StyledReactDatePicker {...boxProps}>
-      <ReactDatePickerComponent popperPlacement='bottom-start' {...rest} locale={lang === 'fa' ? 'fa-IR' : 'en-US'} />
+      <ReactDatePickerComponent popperPlacement='bottom-start' {...rest} locale={'en-US'} />
     </StyledReactDatePicker>
   )
 }

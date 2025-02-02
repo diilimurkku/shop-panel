@@ -22,8 +22,8 @@ import '@/app/globals.css'
 import '@assets/iconify-icons/generated-icons.css'
 
 export const metadata = {
-  title: 'Weton',
-  description: 'Weton admin dashboard'
+  title: 'Diilimurkku',
+  description: 'Diilimurkku shop panel'
 }
 
 const RootLayout = ({ children, params }: ChildrenType & { params: { lang: Locale } }) => {

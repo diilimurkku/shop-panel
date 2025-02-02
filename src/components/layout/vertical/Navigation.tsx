@@ -139,7 +139,8 @@ const Navigation = (props: Props) => {
       {/* Nav Header including Logo & nav toggle icons  */}
       <NavHeader>
         <Link href={getLocalizedUrl('/', locale as Locale)}>
-          <Logo />
+          {/* <Logo hasLogoText={false} /> */}
+          DILLIMURKKU
         </Link>
         {!(isCollapsed && !isHovered) && (
           <NavCollapseIcons

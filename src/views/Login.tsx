@@ -1,6 +1,4 @@
 'use client'
-
-// React Imports
 import { useState } from 'react'
 
 // Next Imports
@@ -12,10 +10,10 @@ import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
 
 // Third-party Imports
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { Controller, useForm } from 'react-hook-form'
 import { valibotResolver } from '@hookform/resolvers/valibot'
-import { object, minLength, string, email, pipe, optional, maxLength, required } from 'valibot'
+import { object, minLength, string, email, pipe } from 'valibot'
 import type { SubmitHandler } from 'react-hook-form'
 import type { InferInput } from 'valibot'
 import classnames from 'classnames'
@@ -50,8 +48,6 @@ const Login = ({ mode, dictionary }: { mode: Mode; dictionary: Awaited<ReturnTyp
 
   const [isLoading, setIsLoading] = useState(false)
 
-  const [loginMode, setLoginMode] = useState<'email' | 'mobile'>('mobile')
-
   const [isPasswordShown, setIsPasswordShown] = useState(false)
 
   // Vars
@@ -75,15 +71,8 @@ const Login = ({ mode, dictionary }: { mode: Mode; dictionary: Awaited<ReturnTyp
 
   // Schema
   const schema = object({
-    email: loginMode === 'email' ? pipe(string(), email(loginTranslation.enter_valid_email)) : optional(string()),
-    mobile:
-      loginMode === 'mobile'
-        ? pipe(
-            string(),
-            minLength(10, loginTranslation.enter_valid_phone_number),
-            maxLength(11, loginTranslation.enter_valid_phone_number)
-          )
-        : optional(string()),
+    email: pipe(string(), email(loginTranslation.enter_valid_email)),
+
     password: pipe(string(), minLength(6, loginTranslation.enter_password))
   })
 
@@ -96,6 +85,10 @@ const Login = ({ mode, dictionary }: { mode: Mode; dictionary: Awaited<ReturnTyp
 
   const { settings } = useSettings()
 
+  const session = useSession()
+
+  console.log(session)
+
   const {
     control,
     handleSubmit,
@@ -107,7 +100,6 @@ const Login = ({ mode, dictionary }: { mode: Mode; dictionary: Awaited<ReturnTyp
     resolver: valibotResolver(schema),
     defaultValues: {
       email: '',
-      mobile: '',
       password: ''
     }
   })
@@ -122,18 +114,12 @@ const Login = ({ mode, dictionary }: { mode: Mode; dictionary: Awaited<ReturnTyp
     borderedDarkIllustration
   )
 
-  const handleChangeLoginMode = () => {
-    if (loginMode === 'email') {
-      setLoginMode('mobile')
-      setValue('email', '')
-      setValue('password', '')
-      clearErrors(['email', 'password'])
-    } else {
-      setLoginMode('email')
-      setValue('mobile', '')
-      setValue('password', '')
-      clearErrors(['mobile', 'password'])
-    }
+  const handleLoginWithGoogle = async () => {
+    const redirectURL = searchParams.get('redirectTo') ?? '/'
+
+    await signIn('google', {
+      callbackUrl: redirectURL !== 'null' && redirectURL ? redirectURL : '/'
+    })
   }
 
   const handleClickShowPassword = () => {
@@ -145,10 +131,11 @@ const Login = ({ mode, dictionary }: { mode: Mode; dictionary: Awaited<ReturnTyp
 
     const res = await signIn('login', {
       email: data.email,
-      mobile: data.mobile,
       password: data.password,
       redirect: false
     })
+
+    console.log(res)
 
     if (res?.error) {
       setIsLoading(false)
@@ -158,7 +145,6 @@ const Login = ({ mode, dictionary }: { mode: Mode; dictionary: Awaited<ReturnTyp
       const errors = error.errors
 
       errors?.['email'] && setError('email', { message: errors['email'] })
-      errors?.['mobile'] && setError('mobile', { message: errors['mobile'] })
       errors?.['password'] && setError('password', { message: errors['password'] })
     }
 
@@ -193,21 +179,18 @@ const Login = ({ mode, dictionary }: { mode: Mode; dictionary: Awaited<ReturnTyp
       </div>
       <div className='flex justify-center items-center bs-full bg-backgroundPaper !min-is-full p-6 md:!min-is-[unset] md:p-12 md:is-[480px]'>
         <div className='absolute block-start-5 sm:block-start-[38px] inline-start-6 sm:inline-start-[38px]'>
-          <Logo />
+          <Logo hasLogoText={false} />
         </div>
         <div className='flex flex-col gap-5 is-full sm:is-auto md:is-full sm:max-is-[400px] md:max-is-[unset]'>
           <div className='mx-auto'>
-            <Logo hasLogoText={false} className='h-[80px] w-[140px]' />
+            <Logo hasLogoText={false} />
           </div>
           <div className='flex flex-col gap-y-2'>
             <Typography variant='h5' className='text-center'>
               {keywordsTranslation.login}
             </Typography>
             <Typography className='text-center' variant='body2'>
-              {loginTranslation.enter_to_login?.replace(
-                '$',
-                loginMode === 'email' ? keywordsTranslation.email : keywordsTranslation.phone_number
-              )}
+              {loginTranslation.enter_to_login?.replace('$', keywordsTranslation.email)}
             </Typography>
           </div>
           {/* <Alert icon={false} className='bg-[var(--mui-palette-primary-lightOpacity)]'>
@@ -219,7 +202,7 @@ const Login = ({ mode, dictionary }: { mode: Mode; dictionary: Awaited<ReturnTyp
 
           <form noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-5'>
             <Controller
-              name={loginMode === 'email' ? 'email' : 'mobile'}
+              name={'email'}
               control={control}
               rules={{ required: true }}
               render={({ field }) => (
@@ -227,15 +210,15 @@ const Login = ({ mode, dictionary }: { mode: Mode; dictionary: Awaited<ReturnTyp
                   {...field}
                   fullWidth
                   autoFocus
-                  type={loginMode === 'email' ? 'email' : 'number'}
-                  label={loginMode === 'email' ? keywordsTranslation.email : keywordsTranslation.phone_number}
+                  type={'email'}
+                  label={keywordsTranslation.email}
                   onChange={e => {
                     field.onChange(e.target.value)
                     errorState !== null && setErrorState(null)
                   }}
-                  {...((errors.email || errors.mobile || errorState !== null) && {
+                  {...((errors.email || errorState !== null) && {
                     error: true,
-                    helperText: errors?.email?.message || errors?.mobile?.message || errorState?.message[0]
+                    helperText: errors?.email?.message || errorState?.message[0]
                   })}
                 />
               )}
@@ -291,11 +274,9 @@ const Login = ({ mode, dictionary }: { mode: Mode; dictionary: Awaited<ReturnTyp
             variant='outlined'
             color='inherit'
             className='flex justify-between !px-4'
-            onClick={handleChangeLoginMode}
+            onClick={handleLoginWithGoogle}
           >
-            <i className={loginMode === 'email' ? 'ri-phone-line' : 'ri-mail-line'} />
-            {loginTranslation.login_with}{' '}
-            {loginMode === 'email' ? keywordsTranslation.phone_number : keywordsTranslation.email}
+            {loginTranslation.login_with_google} <i className={'ri-mail-line'} />
           </Button>
         </div>
       </div>
