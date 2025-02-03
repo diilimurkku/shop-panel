@@ -11,16 +11,17 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-unused-vars': 'warn',
     '@typescript-eslint/no-non-null-assertion': 'off',
-    'lines-around-comment': [
-      'error',
-      {
-        beforeBlockComment: true,
-        beforeLineComment: true,
-        allowBlockStart: true,
-        allowObjectStart: true,
-        allowArrayStart: true
-      }
-    ],
+
+    // 'lines-around-comment': [
+    //   'error',
+    //   {
+    //     beforeBlockComment: true,
+    //     beforeLineComment: true,
+    //     allowBlockStart: true,
+    //     allowObjectStart: true,
+    //     allowArrayStart: true
+    //   }
+    // ],
     'padding-line-between-statements': [
       'error',
       {

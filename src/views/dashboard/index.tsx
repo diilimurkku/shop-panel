@@ -152,11 +152,11 @@ const Dashboard = ({ dictionary }: { dictionary: Awaited<ReturnType<typeof getDi
   return (
     <Grid container spacing={6}>
       <Grid xs={12} md={6} item container spacing={6}>
-        <Grid xs={12} item>
+        {/* <Grid xs={12} item>
           <Button variant='contained' onClick={handleCheckout}>
             test
           </Button>
-        </Grid>
+        </Grid> */}
         <Grid item xs={12} lg={6}>
           <HorizontalWithBorder
             title={dashboard_page.top_product}
